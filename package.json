@@ -1,0 +1,30 @@
+{
+  "name": "js-playwright-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node src/app/server.js",
+    "open:local": "playwright test --ui",
+    "cy:open:stage": "cypress open --project src/ --config-file cypress.stage.config.js --e2e",
+    "smoke:beta:run": "cypress run --project src/ --headless --browser chrome --env grep=smoke --config-file cypress.beta.config.js ",
+    "smoke:stage:run": "cypress run --project src/ --headless --browser chrome --env grep=smoke --config-file cypress.stage.config.js ",
+    "smoke:local:run": "percy exec -- cypress run CYPRESS_BASE_URL=http://localhost:9090 --project src/ --headless --browser chrome --env grep=smoke --config-file cypress.stage.config.js",
+    "smoke:stage": "DEBUG=cypress:cli:run,cypress:server:cypress,cypress:launcher,cypress:server:plugins,cypress:server:run,cypress:server:video,cypress:network:connect percy exec -- cypress run --project src/ --headless --browser chrome --record --key ##CYPRESS_RECORD_KEY_API## --env grep=smoke --config-file cypress.stage.config.js --reporter /opt/node_modules/@videoamp-private/cypress-testrail-reporter --reporter-options domain=videoamp.testrail.io,username=##TESTRAIL_API_USERNAME##,password=##TESTRAIL_API_PASSWORD##,projectId=1,suiteId=1,runName='Smoke Test - ##RELEASE_NAME## - ##BRANCH_NAME##',buildUrl=##BUILD_URL##,githubUrl=##GITHUB_COMMIT_URL##",
+    "smoke:beta": "cypress run --project src/ --headless --browser chrome --record --key ##CYPRESS_RECORD_KEY_API## --env grep=smoke --config-file cypress.beta.config.js --reporter /opt/node_modules/@videoamp-private/cypress-testrail-reporter --reporter-options domain=videoamp.testrail.io,username=##TESTRAIL_API_USERNAME##,password=##TESTRAIL_API_PASSWORD##,projectId=1,suiteId=1,runName='Smoke Test - ##RELEASE_NAME## - ##BRANCH_NAME##',buildUrl=##BUILD_URL##,githubUrl=##GITHUB_COMMIT_URL##",
+    "regression:beta": "cypress run --project src/ --headless --browser chrome --record --key ##CYPRESS_RECORD_KEY_API## --env grep=regression --config-file cypress.beta.config.js --reporter /opt/node_modules/@videoamp-private/cypress-testrail-reporter --reporter-options domain=videoamp.testrail.io,username=##TESTRAIL_API_USERNAME##,password=##TESTRAIL_API_PASSWORD##,projectId=1,suiteId=1,runName='Regression Test - ##RELEASE_NAME## - ##BRANCH_NAME##',buildUrl=##BUILD_URL##,githubUrl=##GITHUB_COMMIT_URL##",
+    "regression:stage": "cypress run --project src/ --headless --browser chrome --record --key ##CYPRESS_RECORD_KEY_API## --env grep=regression --config-file cypress.stage.config.js --reporter /opt/node_modules/@videoamp-private/cypress-testrail-reporter --reporter-options domain=videoamp.testrail.io,username=##TESTRAIL_API_USERNAME##,password=##TESTRAIL_API_PASSWORD##,projectId=1,suiteId=1,runName='Regression Test - ##RELEASE_NAME## - ##BRANCH_NAME##',buildUrl=##BUILD_URL##,githubUrl=##GITHUB_COMMIT_URL##",
+    "regression:beta:run": "cypress run --project src/ --headless --browser chrome --env grep='regression; smoke' --config-file cypress.beta.config.js ",
+    "regression:local:run": "CYPRESS_BASE_URL=http://localhost:9090 cypress run --project src/ --headless --browser chrome --env grep=regression --config-file cypress.stage.config.js",
+    "regression:stage:run": "cypress run --project src/ --headless --browser chrome --env grep='regression; smoke' --config-file cypress.stage.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.41.0",
+    "@types/node": "^20.11.5",
+    "express": "^4.18.2"
+  }
+}
