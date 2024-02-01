@@ -14,6 +14,7 @@ exports.IndexPage = class IndexPage {
 
   constructor(page) {
     this.page = page;
+    this.table = page.locator(this.dataTableLocator);
     this.tableHeaders = page.locator(this.tableHeadersLocator);
     this.paginationNumberButton = page.locator(this.paginationNumberButtonLocator)
     this.tableRows = page.locator(this.tableRowsLocator)
@@ -21,8 +22,8 @@ exports.IndexPage = class IndexPage {
     this.nextPaginationButton = page.locator(this.nextPaginationButtonLocator)
   }
 
-  getDropdownItems(page,option) {
-    return page.locator(this.dropdownOptionsLocator, { hasText: option })
+  getDropdownItems(option) {
+    return this.page.locator(this.dropdownOptionsLocator, { hasText: option })
   }
 
   async getHeadersLabels() {
@@ -35,11 +36,10 @@ exports.IndexPage = class IndexPage {
   }
 
   async getTableElements() {
-    const data = await this.page.evaluate(() => {
+    return this.page.evaluate(() => {
       const table = document.getElementById('table2');
       const headerRow = table.querySelector('thead tr');
       const columns = Array.from(headerRow.children).map((th) => th.textContent.trim());
-  
       const rows = Array.from(table.querySelectorAll('tbody tr'));
       const rowData = rows.map((row) => {
         const values = Array.from(row.children).map((td) => td.textContent.trim());

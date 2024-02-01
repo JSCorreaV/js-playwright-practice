@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
-const { dataTableData } = require ('../../fixtures/dataTableWithFilterData.json')
+const { dataTableData } = require('../../fixtures/dataTableWithFilterData.json')
+const { metricsTableFormats } = require('../../support/utils/formats')
 
 const { IndexPage } = require('../../pageObject/indexPage')
 
@@ -22,111 +23,78 @@ test.describe('Data Table With Sorting and Filter Test',()=>{
 
         const minRowsPerPagination = 1;
         const maxRowsPerPagination = 10;
-    
-      // Expect a title "to contain" a substring.
-      /* await expect(page).toHaveTitle(/Cypress common challenges/); */
       
         await indexPage.clickFilterDropdown();
 
-        options.forEach((option)=>
-        {
-            expect(indexPage.getDropdownItems(page,option)).toBeVisible()
+        options.forEach((option)=>{
+            expect(indexPage.getDropdownItems(option)).toBeVisible();
         })
 
         await indexPage.clickFilterDropdown();
 
-        const columnNames = await indexPage.getHeadersLabels()
+        const columnNames = await indexPage.getHeadersLabels();
 
-        expect(columnNames).toMatchObject(expectedHeaders)
+        expect(columnNames).toMatchObject(expectedHeaders);
       
-        const paginationButtonCount = await indexPage.paginationNumberButton.count()
-        
+        const paginationButtonCount = await page.$$eval('#table2_paginate > span .paginate_button', elements => elements.length);
+
         for (let i = 0; i < paginationButtonCount; i++){
-            const tableElements = await getTableElements()
-            const j=0
-            for (const row of tableElements) {
-                for (const [column, value] of Object.entries(row)) {
-                    switch (column) {
-                        case 'Column1':
-                        expect(value).toMatch(columns[j]);
-                        break;
-                        case 'Column2':
-                        expect(value).toMatch(/your-regex-for-Column2/);
-                        break;
-                        // Add cases for other columns
+            const tableElements = await indexPage.getTableElements();
+            const tableLenght = tableElements.length
+
+            expect(tableLenght).toBeGreaterThanOrEqual(minRowsPerPagination);
+            expect(tableLenght).toBeLessThanOrEqual(maxRowsPerPagination);
+
+            for (const metric of columns) {
+                const type = metric.type;
+                const label = metric.displayName;
                 
-                        default:
-                        // Handle unknown columns
-                        throw new Error(`Unknown column: ${column}`);
+                for (let j = 0; j < tableLenght; j++){
+                    const metricValue = tableElements[j][label];
+                    switch (type) {
+                        case 'decimal': {
+                            expect(metricValue).toMatch(
+                                metricsTableFormats.DECIMAL
+                            );
+                            break;
+                        }
+                        case 'currency': {
+                            expect(metricValue).toMatch(
+                                metricsTableFormats.CURRENCY
+                            );
+                            break;
+                        }
+                        case 'integer': {
+                            expect(metricValue).toMatch(
+                                metricsTableFormats.INTEGER
+                            );
+                            break;
+                        }
+                        case 'decimalAndPercentage': {
+                            expect(metricValue).toMatch(
+                                metricsTableFormats.DECIMAL_AND_PERCENTAGE
+                            );
+                            break;
+                        }
+                        case 'date': {
+                            expect(metricValue).toMatch(
+                                metricsTableFormats.DATE
+                            );
+                            break;
+                        }
+                        case 'percentage': {
+                            expect(metricValue).toMatch(
+                                metricsTableFormats.PERCENTAGE
+                            );
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
                     }
                 }
             }
             await indexPage.clickNextPaginationButton();
         }
-        /* .forEach(() => {
-            indexPage.getTableElements().then((tableElements) => {
-                console.log(tableElements)
-                columns.forEach((metric) => {
-                    console.log(metric)
-                    const type = metric.type;
-                    const label = metric.displayName;
-                    const metricColumn = tableElements[label];
-                    console.log(metricColumn)
-                    cy.wrap(metricColumn)
-                        .should('have.length.at.most', maxRowsPerPagination)
-                        .and('have.length.at.least', minRowsPerPagination);
-                    cy.wrap(metricColumn).each((metricValue) => {
-                        switch (type) {
-                            case 'decimal': {
-                                cy.wrap(metricValue).should(
-                                    'match',
-                                    metricsTableFormats.DECIMAL
-                                );
-                                break;
-                            }
-                            case 'currency': {
-                                cy.wrap(metricValue).should(
-                                    'match',
-                                    metricsTableFormats.CURRENCY
-                                );
-                                break;
-                            }
-                            case 'integer': {
-                                cy.wrap(metricValue).should(
-                                    'match',
-                                    metricsTableFormats.INTEGER
-                                );
-                                break;
-                            }
-                            case 'decimalAndPercentage': {
-                                cy.wrap(metricValue).should(
-                                    'match',
-                                    metricsTableFormats.DECIMAL_AND_PERCENTAGE
-                                );
-                                break;
-                            }
-                            case 'date': {
-                                cy.wrap(metricValue).should(
-                                    'match',
-                                    metricsTableFormats.DATE
-                                );
-                                break;
-                            }
-                            case 'percentage': {
-                                cy.wrap(metricValue).should(
-                                    'match',
-                                    metricsTableFormats.PERCENTAGE
-                                );
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    });
-                });
-            });
-            indexPage.clickNextPaginationButton();
-        }); */
     });
 })
