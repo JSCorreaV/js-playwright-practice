@@ -1,0 +1,94 @@
+{
+    "dataTableData": {
+        "filterBy": {
+            "options": [
+                "All",
+                "2024-01-01",
+                "2024-01-02",
+                "2024-01-03"
+            ]
+        },
+        "columns": [
+            {
+                "displayName": "Date 1",
+                "type": "date"
+            },
+            {
+                "displayName": "CurrencyFloat 1",
+                "type": "currency"
+            },
+            {
+                "displayName": "Integer 1",
+                "type": "integer"
+            },
+            {
+                "displayName": "Float 1",
+                "type": "decimal"
+            },
+            {
+                "displayName": "Percentage 1",
+                "type": "percentage"
+            },
+            {
+                "displayName": "String 1",
+                "type": "string"
+            },
+            {
+                "displayName": "FloatPercentage 1",
+                "type": "decimalAndPercentage"
+            },
+            {
+                "displayName": "Currency 1",
+                "type": "currency"
+            },
+            {
+                "displayName": "Percentage 2",
+                "type": "percentage"
+            },
+            {
+                "displayName": "String 2",
+                "type": "string"
+            },
+            {
+                "displayName": "Date 2",
+                "type": "date"
+            },
+            {
+                "displayName": "CurrencyFloat 2",
+                "type": "currency"
+            },
+            {
+                "displayName": "Integer 2",
+                "type": "integer"
+            },
+            {
+                "displayName": "Float 2",
+                "type": "decimal"
+            },
+            {
+                "displayName": "Percentage 2",
+                "type": "percentage"
+            },
+            {
+                "displayName": "String 2",
+                "type": "string"
+            },
+            {
+                "displayName": "FloatPercentage 2",
+                "type": "decimalAndPercentage"
+            },
+            {
+                "displayName": "Currency 2",
+                "type": "currency"
+            },
+            {
+                "displayName": "Percentage 3",
+                "type": "percentage"
+            },
+            {
+                "displayName": "String 3",
+                "type": "string"
+            }
+        ]
+    }
+}
