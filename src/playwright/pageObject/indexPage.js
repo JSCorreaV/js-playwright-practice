@@ -1,5 +1,3 @@
-const {parseElementsListToTextsList} = require('../support/utils/helpers')
-
 exports.IndexPage = class IndexPage {
 
   filterDropdownLocator = '#filterDropdown';
